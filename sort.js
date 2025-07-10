@@ -29,6 +29,22 @@ function back(step) {
   if (msg) msg.remove();
 }
 
+function resetToStart() {
+  inputArray = [];
+
+  const inputField = document.querySelector("#step3 input");
+  if (inputField) inputField.value = "";
+
+  const visual = document.getElementById("visual");
+  if (visual) visual.innerHTML = "";
+
+  const msg = document.getElementById("complete");
+  if (msg) msg.remove();
+
+  back("step1");
+}
+
+
 function ranarr() {
   const arr = Array.from({ length: 10 }, () => Math.floor(Math.random() * 100));
   document.querySelector("#step3 input").value = arr.join(" ");
