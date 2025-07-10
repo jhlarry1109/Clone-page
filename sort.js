@@ -383,8 +383,8 @@ async function mergeRuns(arr, run1, run2) {
     } else {
       let value = arr[j];
       for (let k = j; k > i; k--) {
-        drawBars(arr, -1, [k, k - 1], []);
-        await animateCompareNodes([k, k - 1]);
+        drawBars(arr, -1, [], [k, k - 1]);
+        await sleep(20);
         await animateCompareNodes([k, k - 1], true, "#4db6ac");
         await swapWithAnimation(arr, k, k - 1);
       }
