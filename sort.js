@@ -375,17 +375,26 @@ async function visualizePowerSort(arr) {
 async function mergeRuns(arr, run1, run2) {
   let i = run1.start;
   let j = run2.start;
+
   while (i < j && j < run2.end && !stopSorting) {
     drawBars(arr, -1, [], [i, j]);
     await animateCompareNodes([i, j]);
+
     if (arr[i] <= arr[j]) {
       i++;
     } else {
       let value = arr[j];
+
       for (let k = j; k > i; k--) {
-        drawBars(arr, -1, [], [k, k - 1]);
-        await sleep(20);
-        await animateCompareNodes([k, k - 1], true, "#4db6ac");
+        const bars = document.getElementById("visual").children;
+        [k, k - 1].forEach(idx => {
+          if (bars[idx]) {
+            bars[idx].style.transition = "transform 0.3s ease, background-color 0.3s ease";
+            bars[idx].style.background = "#4db6ac";
+            bars[idx].style.transform = "translateY(-20px)";
+          }
+        });
+        await sleep(speed);
         await swapWithAnimation(arr, k, k - 1);
       }
       arr[i] = value;
@@ -396,3 +405,4 @@ async function mergeRuns(arr, run1, run2) {
     }
   }
 }
+
