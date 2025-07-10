@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sorting Algorithms Visualizer</title>
+  <style>
+    body {
+      background: #0f0f0f;
+      color: black;
+      text-align: center;
+      padding-top: 100px;
+    }
+
+    .hname {
+      color: #ffffff;
+      margin-bottom: 150px;
+    }
+
+    .choice {
+      margin: 20px;
+      display: inline-block;
+      border: 1px solid #00f0ff;
+    }
+
+    button {
+      height: 100px;
+      width: 200px;
+      position: relative;
+      background: transparent;
+      color: #ffffff;
+      font-size: 20px;
+      border: none;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      overflow: hidden;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      color: #00f0ff;
+      text-shadow: 0 0 5px #00f0ff, 0 0 10px #00f0ff, 0 0 20px #00f0ff;
+    }
+
+    .back, .next {
+      height: 70px;
+      width: 150px;
+      border: 1px solid #00f0ff;
+      position: absolute;
+      bottom: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .back {
+      left: 50px;
+    }
+
+    .next {
+      right: 50px;
+    }
+
+    input {
+      font-size: larger;
+      width: 500px;
+      height: 30px;
+      background-color: #1e1e1e;
+      border: 1px solid #00f0ff;
+      color: #ffffff;
+      padding-left: 10px;
+    }
+
+    #visual {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      height: 400px;
+      gap: 5px;
+      margin: 0 auto;
+      width: 100%;
+      max-width: 90vw;
+      overflow-y: hidden;
+    }
+
+    .box {
+      transition: transform 0.3s ease, 0.3s ease;
+    }
+
+    .highlight {
+      background: #00f0ff !important;
+      box-shadow: 0 5px 15px rgba(0, 240, 255, 0.6);
+    }
+
+    .lift {
+      transform: translateY(-20px);
+      transition: transform 0.3s ease;
+    }
+
+    .drop {
+      transform: translateY(0);
+      transition: transform 0.3s ease;
+    }
+
+    h3 {
+      left: 30px;
+      position: absolute;
+    }
+
+    #speeds {
+      position: absolute;
+      top: 30px;
+      right: 25px;
+    }
+
+    #speedRange {
+      width: 200px;
+    }
+  </style>
+</head>
+<body>
+  <div id="step1">
+    <h1 class="hname">1. 정렬을 선택하세요</h1>
+    <div class="choice"><button onclick="CSort('selection')">선택정렬</button></div>
+    <div class="choice"><button onclick="CSort('bubble')">버블정렬</button></div>
+    <div class="choice"><button onclick="CSort('insertion')">삽입정렬</button></div>
+    <div class="choice"><button onclick="CSort('merge')">병합정렬</button></div>
+    <div class="choice"><button onclick="CSort('quick')">퀵정렬</button></div>
+    <div class="choice"><button onclick="CSort('heap')">힙정렬</button></div>
+    <div class="choice"><button onclick="CSort('power')">파워정렬</button></div>
+  </div>
+
+  <div id="step2" style="display: none;">
+    <h1 class="hname">2. 디자인을 선택하세요</h1>
+    <div class="choice"><button onclick="SortD('stick')">막대형</button></div>
+    <div class="choice"><button onclick="SortD('box')">박스형</button></div>
+    <div class="back"><button onclick="back('step1')">BACK</button></div>
+  </div>
+
+  <div id="step3" style="display: none;">
+    <h1 class="hname">3. 배열을 작성하세요</h1>
+    <input type="text" placeholder="배열을 입력하세요 ex) 10 2 5 29 59 87 21">
+    <br>
+    <div class="choice"><button onclick="ranarr()">자동 배열</button></div>
+    <div class="next"><button onclick="done()">완료</button></div>
+    <div class="back"><button onclick="back('step2')">BACK</button></div>
+  </div>
+
+  <div id="step4" style="display: none;">
+    <h3 style="top: 50px; color: #3f51b5;">보라: 부모 노드</h3>
+    <h3 style="top: 80px; color: #4db6ac;">청록: 교환 대상 노드</h3>
+    <h3 style="top: 110px; color: #ffd54f;">노랑: 비교 대상 노드</h3>
+    <h1 class="hname" id="sort"></h1>
+    <div id="visual"></div>
+    
+    <div id="speeds" style="margin: 20px; color: white;">
+      <label for="speedRange">속도 조절: </label>
+      <input type="range" id="speedRange" min="1" max="10" step="1" value="5" oninput="updateSpeed(this.value)">
+      <span id="speedLabel">중간</span>
+    </div>
+
+    <div class="back" style="right: 50px; left: auto;"><button onclick="back('step1')">처음으로</button></div>
+    <div class="back"><button onclick="back('step3')">배열 수정</button></div>
+  </div>
+
+  <script src="sort.js"></script>
+</body>
+</html>
