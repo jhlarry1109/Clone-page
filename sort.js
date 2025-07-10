@@ -46,7 +46,7 @@ function resetToStart() {
 
 
 function ranarr() {
-  const arr = Array.from({ length: 10 }, () => Math.floor(Math.random() * 100));
+  const arr = Array.from({ length: 10 }, () => Math.floor(Math.random() * 100)+1);
   document.querySelector("#step3 input").value = arr.join(" ");
 }
 
