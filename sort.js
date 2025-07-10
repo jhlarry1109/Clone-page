@@ -113,35 +113,32 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 async function animateCompareNodes(compareIndices, skipDrop = false, highlightColor = "#ffd54f") {
   if (!compareIndices || compareIndices.length === 0) return;
-  await sleep(0);
+  await sleep(100);
   const bars = document.getElementById("visual").children;
   compareIndices.forEach(idx => {
     if (bars[idx]) {
-      bars[idx].style.background = highlightColor;
-      bars[idx].classList.add("lift");
-      bars[idx].classList.remove("drop");
       bars[idx].style.transition = "transform 0.3s ease, background-color 0.3s ease";
+      bars[idx].style.background = highlightColor;
+      bars[idx].style.transform = "translateY(-20px)";
     }
   });
   await sleep(speed);
   if (!skipDrop) {
     compareIndices.forEach(idx => {
       if (bars[idx]) {
-        bars[idx].classList.remove("lift");
-        bars[idx].classList.add("drop");
-        bars[idx].style.transition = "transform 0.3s ease";
+        bars[idx].style.transform = "translateY(0)";
       }
     });
     await sleep(speed);
     compareIndices.forEach(idx => {
       if (bars[idx]) {
-        bars[idx].classList.remove("drop");
         bars[idx].style.transition = "";
         bars[idx].style.background = "white";
       }
     });
   }
 }
+
 
 async function swapWithAnimation(arr, idx1, idx2) {
   const bars = document.getElementById("visual").children;
