@@ -49,7 +49,6 @@ async function startSort() {
   document.getElementById("step3").style.display = "none";
   document.getElementById("step4").style.display = "block";
   drawBars(arr);
-
   const funcs = {
     bubble: visualizeBubbleSort,
     selection: visualizeSelectionSort,
@@ -59,15 +58,13 @@ async function startSort() {
     heap: visualizeHeapSort,
     power: visualizePowerSort
   };
-
   const fn = funcs[selectedAlgorithm];
   if (!fn) { alert("정렬 방식이 선택되지 않았습니다."); return; }
   await fn(arr);
-
   if (!stopSorting) {
     drawBars(arr);
     const msg = document.createElement("div");
-    msg.id = "complete"
+    msg.id = "complete";
     msg.innerText = "정렬이 완료되었습니다!";
     msg.style.color = "#ffffff";
     msg.style.fontSize = "24px";
@@ -80,13 +77,10 @@ function drawBars(array, parentIdx = -1, swapIndices = [], compareIndices = [], 
   const visual = document.getElementById("visual");
   visual.innerHTML = "";
   const max = Math.max(...array);
-
   if (!Array.isArray(swapIndices)) swapIndices = swapIndices === -1 ? [] : [swapIndices];
   if (!Array.isArray(compareIndices)) compareIndices = compareIndices === -1 ? [] : [compareIndices];
-
   array.forEach((val, idx) => {
     const el = document.createElement("div");
-
     if (selectedDesign === "box") {
       el.classList.add("box");
       el.innerText = val;
@@ -96,9 +90,7 @@ function drawBars(array, parentIdx = -1, swapIndices = [], compareIndices = [], 
       el.style.height = `${(val / max) * 100}%`;
       el.style.width = "20px";
     }
-
     el.style.margin = "5px";
-
     if (swapIndices.includes(idx)) {
       el.style.background = "#4db6ac";
       el.classList.add("lift");
@@ -110,11 +102,9 @@ function drawBars(array, parentIdx = -1, swapIndices = [], compareIndices = [], 
     } else {
       el.style.background = "white";
     }
-
     el.style.display = "flex";
     el.style.alignItems = "center";
     el.style.justifyContent = "center";
-
     visual.appendChild(el);
   });
 }
@@ -123,8 +113,8 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 async function animateCompareNodes(compareIndices, skipDrop = false, highlightColor = "#ffd54f") {
   if (!compareIndices || compareIndices.length === 0) return;
+  await sleep(0);
   const bars = document.getElementById("visual").children;
-
   compareIndices.forEach(idx => {
     if (bars[idx]) {
       bars[idx].style.background = highlightColor;
@@ -134,7 +124,6 @@ async function animateCompareNodes(compareIndices, skipDrop = false, highlightCo
     }
   });
   await sleep(speed);
-
   if (!skipDrop) {
     compareIndices.forEach(idx => {
       if (bars[idx]) {
@@ -144,7 +133,6 @@ async function animateCompareNodes(compareIndices, skipDrop = false, highlightCo
       }
     });
     await sleep(speed);
-
     compareIndices.forEach(idx => {
       if (bars[idx]) {
         bars[idx].classList.remove("drop");
@@ -157,43 +145,31 @@ async function animateCompareNodes(compareIndices, skipDrop = false, highlightCo
 
 async function swapWithAnimation(arr, idx1, idx2) {
   const bars = document.getElementById("visual").children;
-
   drawBars(arr, -1, [idx1, idx2]);
   await sleep(speed);
-
   const rect1 = bars[idx1].getBoundingClientRect();
   const rect2 = bars[idx2].getBoundingClientRect();
   const distance = rect2.left - rect1.left;
-
   bars[idx1].style.transition = "transform 0.3s ease";
   bars[idx2].style.transition = "transform 0.3s ease";
-
   bars[idx1].style.transform = `translateX(${distance}px) translateY(-20px)`;
   bars[idx2].style.transform = `translateX(${-distance}px) translateY(-20px)`;
   await sleep(speed);
-
   [arr[idx1], arr[idx2]] = [arr[idx2], arr[idx1]];
-
   bars[idx1].style.transition = "none";
   bars[idx2].style.transition = "none";
   bars[idx1].style.transform = "";
   bars[idx2].style.transform = "";
-
   drawBars(arr, -1, [idx1, idx2]);
   await sleep(50);
-
   const newBars = document.getElementById("visual").children;
-
   newBars[idx1].classList.add("drop");
   newBars[idx2].classList.add("drop");
-
   newBars[idx1].style.transition = "transform 0.3s ease";
   newBars[idx2].style.transition = "transform 0.3s ease";
-
   await sleep(20);
   newBars[idx1].classList.remove("lift");
   newBars[idx2].classList.remove("lift");
-
   await sleep(300);
   newBars[idx1].classList.remove("drop");
   newBars[idx2].classList.remove("drop");
@@ -262,10 +238,8 @@ async function visualizeMergeSort(arr) {
     await mergeSortHelper(mid, end);
     await merge(start, mid, end);
   }
-
   async function merge(start, mid, end) {
     let i = start, j = mid;
-
     while (i < j && j < end && !stopSorting) {
       drawBars(arr, -1, [], [i, j]);
       await animateCompareNodes([i, j]);
@@ -287,7 +261,6 @@ async function visualizeMergeSort(arr) {
       }
     }
   }
-
   await mergeSortHelper(0, arr.length);
 }
 
@@ -299,7 +272,6 @@ async function visualizeQuickSort(arr) {
     await quickSortHelper(low, p - 1);
     await quickSortHelper(p + 1, high);
   }
-
   async function partition(low, high) {
     let pivot = arr[high];
     let i = low;
@@ -317,19 +289,16 @@ async function visualizeQuickSort(arr) {
     await swapWithAnimation(arr, i, high);
     return i;
   }
-
   await quickSortHelper(0, arr.length - 1);
 }
 
 async function visualizeHeapSort(arr) {
   const n = arr.length;
-
   async function heapify(n, i) {
     if (stopSorting) return;
     let largest = i,
       l = 2 * i + 1,
       r = 2 * i + 2;
-
     if (l < n) {
       drawBars(arr, i, [], [l], true);
       await animateCompareNodes([l]);
@@ -337,7 +306,6 @@ async function visualizeHeapSort(arr) {
         largest = l;
       }
     }
-
     if (r < n) {
       drawBars(arr, i, [], [r], true);
       await animateCompareNodes([r]);
@@ -345,7 +313,6 @@ async function visualizeHeapSort(arr) {
         largest = r;
       }
     }
-
     if (largest !== i) {
       drawBars(arr, i, [largest], [], true);
       await sleep(speed);
@@ -357,11 +324,9 @@ async function visualizeHeapSort(arr) {
       await sleep(speed);
     }
   }
-
   for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
     await heapify(n, i);
   }
-
   for (let i = n - 1; i > 0; i--) {
     if (stopSorting) return;
     drawBars(arr, 0, [i], [], true);
@@ -375,7 +340,6 @@ async function visualizeHeapSort(arr) {
 function detectRuns(arr) {
   const runs = [];
   let start = 0;
-
   for (let i = 1; i <= arr.length; i++) {
     if (i === arr.length || arr[i] < arr[i - 1]) {
       runs.push({ start: start, end: i });
@@ -398,11 +362,9 @@ async function visualizePowerSort(arr) {
 async function mergeRuns(arr, run1, run2) {
   let i = run1.start;
   let j = run2.start;
-
   while (i < j && j < run2.end && !stopSorting) {
     drawBars(arr, -1, [], [i, j]);
     await animateCompareNodes([i, j]);
-
     if (arr[i] <= arr[j]) {
       i++;
     } else {
