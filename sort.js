@@ -9,6 +9,11 @@ function updateSpeed(value) {
   else label.innerText = "빠름";
 }
 
+function Start() {
+  document.getElementById("step0").style.display = "none";
+  document.getElementById("step1").style.display = "block";
+}
+
 function CSort(algorithm) {
   selectedAlgorithm = algorithm;
   document.getElementById("step1").style.display = "none";
@@ -41,7 +46,7 @@ function resetToStart() {
   const msg = document.getElementById("complete");
   if (msg) msg.remove();
 
-  back("step1");
+  back("step0");
 }
 
 
@@ -255,6 +260,7 @@ async function visualizeMergeSort(arr) {
     let i = start, j = mid;
     while (i < j && j < end && !stopSorting) {
       drawBars(arr, -1, [], [i, j]);
+      await sleep(20);
       await animateCompareNodes([i, j]);
       if (arr[i] <= arr[j]) {
         i++;
@@ -262,7 +268,6 @@ async function visualizeMergeSort(arr) {
         let value = arr[j];
         for (let k = j; k > i; k--) {
           drawBars(arr, -1, [], [k, k - 1]);
-          await sleep(20);
           await animateCompareNodes([k, k - 1], true, "#4db6ac");
           await swapWithAnimation(arr, k, k - 1);
           if (stopSorting) return;

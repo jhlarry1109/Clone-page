@@ -14,7 +14,7 @@
 
     .hname {
       color: #ffffff;
-      margin-bottom: 150px;
+      margin-bottom: 7vh;
     }
 
     .choice {
@@ -48,10 +48,14 @@
       width: 150px;
       border: 1px solid #00f0ff;
       position: absolute;
-      bottom: 50px;
+      bottom: 5vh;
       display: flex;
       justify-content: center;
       align-items: center;
+    }
+    .back:hover, .next:hover {
+      transform: rotate(1deg);
+      transition: 0.3s;
     }
 
     .back {
@@ -63,9 +67,9 @@
     }
 
     input {
-      font-size: larger;
-      width: 500px;
-      height: 30px;
+      font-size: 25px;
+      width: 600px;
+      height: 50px;
       background-color: #1e1e1e;
       border: 1px solid #00f0ff;
       color: #ffffff;
@@ -117,32 +121,105 @@
     #speedRange {
       width: 200px;
     }
+
+    #divide {
+      margin-top: 4vh;
+    }
+    
+    #tname {
+      color: white;
+      font-size: 80px;
+      font-weight: bold;
+    }
+    .choice:hover {
+      transform: rotate(1deg);
+      transition: 0.3s;
+    }
+
+    #text-container {
+      position: fixed;
+      bottom: 20px;
+      width: 100%;
+      background: #0f0f0f;
+      overflow: hidden;
+      white-space: nowrap;
+      z-index: 1000;
+    }
+
+
+    .scrolling-text {
+      display: inline-block;
+      white-space: nowrap;
+      animation: scroll 20s linear infinite;
+    }
+
+    .scrolling-text h1 {
+      display: inline-block;
+      font-size: 3rem;
+      color: white;
+      margin: 0 100px;
+    }
+    @keyframes scroll {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+
+
+
+
   </style>
 </head>
 <body>
-  <div id="step1">
+  <div id="step0">
+    <h1 id="tname">Sorting Algorithms Visualizer</h1>
+    <div class="choice" id="sbtn"><button onclick="Start()">시작!</button></div>
+    <div id="text-container">
+      <div class="scrolling-text">
+        <h1>bubble selection insertion merge quick heap power</h1>
+        <h1>bubble selection insertion merge quick heap power</h1>
+        <h1>bubble selection insertion merge quick heap power</h1>
+        <h1>bubble selection insertion merge quick heap power</h1>
+      </div>
+    </div>
+  </div>
+  <div id="step1" style="display: none;">
     <h1 class="hname">1. 정렬을 선택하세요</h1>
-    <div class="choice"><button onclick="CSort('selection')">선택정렬</button></div>
-    <div class="choice"><button onclick="CSort('bubble')">버블정렬</button></div>
-    <div class="choice"><button onclick="CSort('insertion')">삽입정렬</button></div>
-    <div class="choice"><button onclick="CSort('merge')">병합정렬</button></div>
-    <div class="choice"><button onclick="CSort('quick')">퀵정렬</button></div>
-    <div class="choice"><button onclick="CSort('heap')">힙정렬</button></div>
-    <div class="choice"><button onclick="CSort('power')">파워정렬</button></div>
+    <div id="non-divide">
+      <h2 style="color: white;">비분할</h2>
+      <div class="choice"><button onclick="CSort('selection')">선택정렬</button></div>
+      <div class="choice"><button onclick="CSort('bubble')">버블정렬</button></div>
+      <div class="choice"><button onclick="CSort('insertion')">삽입정렬</button></div>
+      <div class="choice"><button onclick="CSort('heap')">힙정렬</button></div>
+    </div>
+    <div id="divide">
+      <h2 style="color: white;">분할</h2>
+      <div class="choice"><button onclick="CSort('power')">파워정렬</button></div>
+      <div class="choice"><button onclick="CSort('merge')">병합정렬</button></div>
+      <div class="choice"><button onclick="CSort('quick')">퀵정렬</button></div>
+    </div>
+    <div class="back"><button onclick="back('step0')">BACK</button></div>
   </div>
 
   <div id="step2" style="display: none;">
     <h1 class="hname">2. 디자인을 선택하세요</h1>
-    <div class="choice"><button onclick="SortD('stick')">막대형</button></div>
-    <div class="choice"><button onclick="SortD('box')">박스형</button></div>
+    <div style="margin-top: 22vh;">
+      <div class="choice"><button onclick="SortD('stick')">막대형</button></div>
+      <div class="choice"><button onclick="SortD('box')">박스형</button></div>
+    </div>
     <div class="back"><button onclick="back('step1')">BACK</button></div>
   </div>
 
   <div id="step3" style="display: none;">
     <h1 class="hname">3. 배열을 작성하세요</h1>
-    <input type="text" placeholder="배열을 입력하세요 ex) 10 2 5 29 59 87 21">
-    <br>
-    <div class="choice"><button onclick="ranarr()">자동 배열</button></div>
+    <div style="margin-top: 20vh;">
+      <input type="text" placeholder="배열을 입력하세요 ex) 10 2 5 29 59 87 21">
+      <br>
+      <div class="choice"><button onclick="ranarr()">자동 배열</button></div>
+    </div>
     <div class="next"><button onclick="done()">완료</button></div>
     <div class="back"><button onclick="back('step2')">BACK</button></div>
   </div>
